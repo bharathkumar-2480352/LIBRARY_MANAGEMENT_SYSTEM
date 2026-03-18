@@ -1,19 +1,72 @@
+/* Import Google Fonts: Inter (UI/Body) and Merriweather (Headings/Titles) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
 :root {
   --choc-black: #38240D;
   --choc-brown: #713600;
   --choc-orange: #C05800;
   --choc-cream: #FDFBD4;
+  --choc-white: #FFFFFF;
 }
 
-/* Force the app to take up the full screen and remove Vite's default margins */
 html, body, #root {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevents any horizontal scrolling */
+  overflow-x: hidden;
 }
 
 body {
   background-color: var(--choc-cream);
   color: var(--choc-black);
+  font-family: 'Inter', sans-serif; /* Clean, modern base font */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Apply Serif font to all headings to give that classic library feel */
+h1, h2, h3, h4, h5, h6, .serif-font {
+  font-family: 'Merriweather', serif;
+}
+
+/* Flat UI overrides */
+.flat-border {
+  border: 1px solid var(--choc-black);
+  border-radius: 0; /* Sharp corners */
+}
+
+.flat-btn {
+  border: 1px solid var(--choc-black);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--choc-black);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.flat-btn-primary {
+  background-color: var(--choc-orange);
+  color: var(--choc-white);
+  border-color: var(--choc-orange);
+}
+
+.flat-btn-primary:hover {
+  background-color: var(--choc-black);
+  border-color: var(--choc-black);
+  color: var(--choc-white);
+}
+
+.flat-input {
+  border: 1px solid var(--choc-black);
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.flat-input:focus {
+  outline: none;
+  border-color: var(--choc-orange);
+  box-shadow: none;
 }
