@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Sidebar({ onOpenCart, isOpen, onClose }) {
+  const navigate=useNavigate();
   const { activeBorrows, getCartTotal } = useStore();
   const totalCartItems = getCartTotal();
 
