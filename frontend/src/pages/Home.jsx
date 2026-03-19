@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import { useState, useRef } from 'react';
 import { Search, ChevronRight, ChevronLeft, SlidersHorizontal, X } from 'lucide-react';
 import useStore from '../store/useStore';
@@ -55,6 +56,7 @@ const BookShelf = ({ title, books, cart, addToCart, removeFromCart, showBadge })
     <div className="mb-5">
       <div className="d-flex justify-content-between align-items-center mb-3 px-2">
         <h4 className="mb-0 fw-bold" style={{ color: COLORS.textPrimary, letterSpacing: '-0.5px' }}>{title}</h4>
+        <span style={{ color: COLORS.textPrimary, cursor: 'pointer', fontSize: '0.85rem', fontWeight: '500' }}>View All &rarr;</span>
       </div>
       <div className="position-relative group">
         <button onClick={() => scroll('left')} className="btn position-absolute top-50 translate-middle-y rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ left: '-15px', width: '36px', height: '36px', backgroundColor: COLORS.white, color: COLORS.textPrimary, zIndex: 10, border: 'none' }}><ChevronLeft size={20} /></button>
@@ -145,9 +147,10 @@ export default function Home() {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <div style={{ padding: '30px 40px' }}>
+    // Replaced hardcoded padding with responsive Bootstrap classes
+    <div className="p-3 p-md-5 w-100">
       
-      <div className="d-flex align-items-center mb-5 bg-white rounded-pill p-2 shadow-sm" style={{ maxWidth: '600px' }}>
+      <div className="d-flex align-items-center mb-4 mb-md-5 bg-white rounded-pill p-2 shadow-sm mx-auto" style={{ maxWidth: '600px' }}>
         <div className="d-flex align-items-center flex-grow-1 px-3">
           <Search size={18} style={{ color: COLORS.textSecondary }} />
           <input type="text" className="form-control border-0 shadow-none bg-transparent" placeholder="Search by title, author, or ISBN..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ color: COLORS.textPrimary, fontSize: '0.95rem' }} />
@@ -210,7 +213,8 @@ export default function Home() {
           )}
 
           <div className="container-fluid px-0 pb-5">
-            <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+            {/* FIXED GRID: Now starts with row-cols-1 for mobile, scaling up gracefully */}
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
               {filteredCatalog.length > 0 ? (
                 filteredCatalog.map(book => (
                   <div className="col" key={`grid-${book.id}`}>
