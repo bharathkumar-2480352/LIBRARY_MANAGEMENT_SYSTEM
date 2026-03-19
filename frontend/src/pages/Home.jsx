@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react';
-import { Search, ChevronRight, ChevronLeft, SlidersHorizontal, X } from 'lucide-react';
+import { Search, ChevronRight, ChevronLeft, SlidersHorizontal, X, BookOpen } from 'lucide-react';
 import useStore from '../store/useStore';
 import { COLORS } from '../utils/theme';
 import BookDetailsModal from '../components/BookDetailsModal';
 
-// Expanded Mock Data with added metadata for the modal
+// Expanded Mock Data with Exclusive E-Books
 const MOCK_BOOKS = [
   { id: 1, title: 'The Pragmatic Programmer', author: 'David Thomas', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Addison-Wesley', year: '1999', pages: 352, cover: 'https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
   { id: 2, title: 'Clean Code', author: 'Robert C. Martin', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Prentice Hall', year: '2008', pages: 464, cover: 'https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
@@ -16,16 +16,11 @@ const MOCK_BOOKS = [
   { id: 8, title: 'Deep Work', author: 'Cal Newport', genre: 'Business', language: 'English', ageGroup: 'Adult', publisher: 'Grand Central', year: '2016', pages: 304, cover: 'https://covers.openlibrary.org/b/isbn/9781455586691-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
   { id: 9, title: 'The Winds of Winter', author: 'George R.R. Martin', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Bantam Books', year: '2026', pages: 1024, cover: 'https://covers.openlibrary.org/b/isbn/9780002247412-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
   { id: 10, title: 'Madhushala', author: 'Harivansh Rai Bachchan', genre: 'Poetry', language: 'Hindi', ageGroup: 'Adult', publisher: 'Rajpal & Sons', year: '1935', pages: 144, cover: 'https://covers.openlibrary.org/b/isbn/9788121601053-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 11, title: 'Diary of a Wimpy Kid', author: 'Jeff Kinney', genre: 'Fiction', language: 'English', ageGroup: '9-12 Years', publisher: 'Amulet Books', year: '2007', pages: 224, cover: 'https://covers.openlibrary.org/b/isbn/9780141324906-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
-  { id: 12, title: 'The Very Hungry Caterpillar', author: 'Eric Carle', genre: 'Fiction', language: 'English', ageGroup: '0-5 Years', publisher: 'World Publishing', year: '1969', pages: 26, cover: 'https://covers.openlibrary.org/b/isbn/9780241003008-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 13, title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'MIT Press', year: '2009', pages: 1312, cover: 'https://covers.openlibrary.org/b/isbn/9780262033848-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 14, title: 'Sapiens', author: 'Yuval Noah Harari', genre: 'History', language: 'English', ageGroup: 'Adult', publisher: 'Harvill Secker', year: '2014', pages: 464, cover: 'https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 15, title: '1984', author: 'George Orwell', genre: 'Classic', language: 'English', ageGroup: 'Young Adult', publisher: 'Secker & Warburg', year: '1949', pages: 328, cover: 'https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 16, title: 'Harry Potter and the Cursed Child', author: 'J.K. Rowling', genre: 'Fiction', language: 'English', ageGroup: '9-12 Years', publisher: 'Little, Brown', year: '2016', pages: 320, cover: 'https://covers.openlibrary.org/b/isbn/9781338099133-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
-  { id: 17, title: 'The Midnight Library', author: 'Matt Haig', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Canongate Books', year: '2020', pages: 304, cover: 'https://covers.openlibrary.org/b/isbn/9780525559474-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 18, title: 'Book Lovers', author: 'Emily Henry', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Berkley', year: '2022', pages: 384, cover: 'https://covers.openlibrary.org/b/isbn/9780593440872-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
-  { id: 19, title: 'Tomorrow, and Tomorrow, and Tomorrow', author: 'Gabrielle Zevin', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Knopf', year: '2022', pages: 416, cover: 'https://covers.openlibrary.org/b/isbn/9780593321201-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
-  { id: 20, title: 'Iron Flame', author: 'Lauren Roberts', genre: 'Fiction', language: 'English', ageGroup: 'Young Adult', publisher: 'Entangled', year: '2023', pages: 640, cover: 'https://covers.openlibrary.org/b/isbn/9781649374172-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
+  
+  // NEW: Exclusive E-Books
+  { id: 21, title: 'The Art of War', author: 'Sun Tzu', genre: 'Classic', language: 'English', ageGroup: 'Adult', publisher: 'Shambhala', year: '2005', pages: 112, cover: 'https://covers.openlibrary.org/b/isbn/9781590302255-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
+  { id: 22, title: 'Meditations', author: 'Marcus Aurelius', genre: 'Classic', language: 'English', ageGroup: 'Adult', publisher: 'Modern Library', year: '2002', pages: 256, cover: 'https://covers.openlibrary.org/b/isbn/9780812968255-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
+  { id: 23, title: 'Relativity', author: 'Albert Einstein', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Crown', year: '1961', pages: 188, cover: 'https://covers.openlibrary.org/b/isbn/9780517025306-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
 ];
 
 const FILTER_OPTIONS = {
@@ -59,7 +54,6 @@ const BookShelf = ({ title, books, cart, onBookClick, showBadge }) => {
         <span style={{ color: COLORS.textPrimary, cursor: 'pointer', fontSize: '0.85rem', fontWeight: '500' }}>View All &rarr;</span>
       </div>
       <div className="position-relative group">
-        {/* Adjusted left/right positions to '0px' to prevent clipping */}
         <button onClick={() => scroll('left')} className="btn position-absolute top-50 translate-middle-y rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ left: '0px', width: '36px', height: '36px', backgroundColor: COLORS.white, color: COLORS.textPrimary, zIndex: 10, border: 'none' }}><ChevronLeft size={20} /></button>
         <div ref={scrollRef} className="d-flex align-items-end gap-4 px-4 hide-scrollbar" style={{ overflowX: 'auto', paddingBottom: '2px' }}>
           {books.map((book) => {
@@ -68,7 +62,13 @@ const BookShelf = ({ title, books, cart, onBookClick, showBadge }) => {
               <div key={book.id} className="position-relative flex-shrink-0" style={{ width: '115px', cursor: 'pointer' }} onClick={() => onBookClick(book)}>
                 <img src={book.cover} alt={book.title} onError={handleImageError} style={{ height: '170px', width: '100%', objectFit: 'cover', borderRadius: '2px 6px 6px 2px', boxShadow: '-4px 0px 10px rgba(0,0,0,0.15)', borderLeft: '3px solid rgba(255,255,255,0.3)', opacity: inCart ? 0.6 : 1, transition: 'opacity 0.2s ease' }} />
                 {inCart && <div className="position-absolute top-50 start-50 translate-middle badge rounded-pill px-3 py-2 shadow-sm" style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white, border: `1px solid ${COLORS.white}` }}>In Bag</div>}
-                {showBadge === 'Coming Soon' && !inCart && <div className="position-absolute bottom-0 start-50 translate-middle-x badge w-100 rounded-0" style={{ backgroundColor: COLORS.textSecondary, color: COLORS.white, fontSize: '0.7rem' }}>Pre-Order</div>}
+                
+                {/* Generic Badge Handler for E-Books or Coming Soon */}
+                {showBadge && !inCart && (
+                  <div className="position-absolute bottom-0 start-50 translate-middle-x badge w-100 rounded-0" style={{ backgroundColor: showBadge === 'E-Book' ? COLORS.textPrimary : COLORS.textSecondary, color: COLORS.white, fontSize: '0.7rem' }}>
+                    {showBadge}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -88,8 +88,9 @@ const GridBookCard = ({ book, cart, onBookClick, addToCart, removeFromCart }) =>
   
   return (
     <div className="card h-100 border-0 shadow-sm" style={{ backgroundColor: COLORS.white, borderRadius: '12px', overflow: 'hidden', cursor: 'pointer' }} onClick={() => onBookClick(book)}>
-      <div style={{ height: '180px', backgroundColor: COLORS.sidebarBg, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '15px' }}>
+      <div style={{ height: '180px', backgroundColor: COLORS.sidebarBg, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '15px', position: 'relative' }}>
         <img src={book.cover} alt={book.title} onError={handleImageError} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain', boxShadow: '2px 2px 8px rgba(0,0,0,0.1)' }} />
+        {book.isEbook && <span className="position-absolute top-0 end-0 m-2 badge bg-dark">E-Book</span>}
       </div>
       <div className="card-body d-flex flex-column p-3">
         <h6 className="fw-bold mb-1" style={{ color: COLORS.textPrimary, fontSize: '0.9rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{book.title}</h6>
@@ -99,12 +100,18 @@ const GridBookCard = ({ book, cart, onBookClick, addToCart, removeFromCart }) =>
           <span className="badge fw-normal" style={{ backgroundColor: COLORS.sidebarBg, color: COLORS.textSecondary, fontSize: '0.7rem' }}>{book.ageGroup}</span>
         </div>
         <button 
-          // Stop propagation prevents the card's onClick (opening the modal) from firing when just trying to add to bag
-          onClick={(e) => { e.stopPropagation(); inCart ? removeFromCart(book.id) : addToCart(book); }}
-          className="btn btn-sm w-100 fw-bold rounded-pill"
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            if (book.isEbook) {
+              alert("Opening E-Reader for members...");
+            } else {
+              inCart ? removeFromCart(book.id) : addToCart(book); 
+            }
+          }}
+          className="btn btn-sm w-100 fw-bold rounded-pill d-flex align-items-center justify-content-center gap-2"
           style={{ backgroundColor: inCart ? COLORS.activeBg : 'transparent', border: `1px solid ${COLORS.textPrimary}`, color: COLORS.textPrimary, transition: 'all 0.2s', fontSize: '0.8rem' }}
         >
-          {inCart ? 'Remove' : '+ Add to Bag'}
+          {book.isEbook ? <><BookOpen size={14}/> Read Now</> : (inCart ? 'Remove' : '+ Add to Bag')}
         </button>
       </div>
     </div>
@@ -117,7 +124,6 @@ const GridBookCard = ({ book, cart, onBookClick, addToCart, removeFromCart }) =>
 export default function Home() {
   const { cart, addToCart, removeFromCart } = useStore();
   
-  // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     genre: 'All Genres',
@@ -125,7 +131,6 @@ export default function Home() {
     ageGroup: 'All Ages'
   });
 
-  // Modal State
   const [selectedBook, setSelectedBook] = useState(null);
   const [isBookModalOpen, setIsBookModalOpen] = useState(false);
 
@@ -137,6 +142,7 @@ export default function Home() {
   const trendingBooks = MOCK_BOOKS.filter(b => b.isTrending);
   const recommendedBooks = MOCK_BOOKS.filter(b => b.isRecommended);
   const comingSoonBooks = MOCK_BOOKS.filter(b => b.isComingSoon);
+  const ebookBooks = MOCK_BOOKS.filter(b => b.isEbook); // Filter out our E-Books
 
   const filteredCatalog = MOCK_BOOKS.filter(book => {
     const matchesSearch = !searchQuery || book.title.toLowerCase().includes(searchQuery.toLowerCase()) || book.author.toLowerCase().includes(searchQuery.toLowerCase());
@@ -174,10 +180,13 @@ export default function Home() {
       <div className="w-100 mx-auto" style={{ maxWidth: '1100px' }}>
         
         {!isSearching && (
-          // Removed overflow-hidden to stop clipping the scroll buttons
           <div className="d-flex flex-column gap-5 mb-5 pb-4 border-bottom" style={{ borderColor: COLORS.activeBg }}>
             <BookShelf title="Trending Now" books={trendingBooks} cart={cart} onBookClick={handleBookClick} />
             <BookShelf title="Recommended For You" books={recommendedBooks} cart={cart} onBookClick={handleBookClick} />
+            
+            {/* NEW: Exclusive E-Books Shelf */}
+            <BookShelf title="Exclusive E-Books" books={ebookBooks} cart={cart} onBookClick={handleBookClick} showBadge="E-Book" />
+            
             <BookShelf title="Coming Soon" books={comingSoonBooks} cart={cart} onBookClick={handleBookClick} showBadge="Coming Soon" />
           </div>
         )}
@@ -243,7 +252,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Book Details Modal */}
       <BookDetailsModal 
         book={selectedBook} 
         isOpen={isBookModalOpen} 
