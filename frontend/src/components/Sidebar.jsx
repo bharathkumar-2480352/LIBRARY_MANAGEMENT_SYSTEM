@@ -3,8 +3,11 @@ import { Home as HomeIcon, BookOpen, Heart, ShoppingCart, User, X } from 'lucide
 import { NavLink } from 'react-router-dom';
 import useStore from '../store/useStore';
 import { COLORS } from '../utils/theme';
+import { useNavigate } from "react-router-dom";
+
 
 export default function Sidebar({ onOpenCart, isOpen, onClose }) {
+  const navigate=useNavigate();
   const { activeBorrows, getCartTotal } = useStore();
   const totalCartItems = getCartTotal();
 
@@ -62,11 +65,11 @@ export default function Sidebar({ onOpenCart, isOpen, onClose }) {
         </nav>
       </div>
 
-      <div className="p-3 mt-auto rounded-3 d-flex align-items-center gap-3 cursor-pointer" style={{ backgroundColor: COLORS.white, boxShadow: `0 2px 10px ${COLORS.shelfShadow}` }}>
-        <div className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '40px', height: '40px', backgroundColor: COLORS.activeBg, color: COLORS.textPrimary }}><User size={20} /></div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <h6 className="mb-0 text-truncate" style={{ color: COLORS.textPrimary, fontSize: '0.9rem', fontWeight: '600' }}>Uday Gandhi</h6>
-          <small className="text-truncate d-block" style={{ color: COLORS.textSecondary, fontSize: '0.75rem' }}>{activeBorrows}/6 Borrowed</small>
+      <div onClick={() => navigate('/profile')} className="p-3 mt-auto rounded-3 d-flex align-items-center gap-3 cursor-pointer" style={{ backgroundColor: COLORS.white,cursor: 'pointer', boxShadow: `0 2px 10px ${COLORS.shelfShadow}` }}>
+        <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: COLORS.activeBg, color: COLORS.textPrimary }}><User size={20} /></div>
+        <div style={{ flex: 1 }}>
+          <h6 className="mb-0" style={{ color: COLORS.textPrimary, fontSize: '0.9rem', fontWeight: '600' }}>Uday Gandhi</h6>
+          <small style={{ color: COLORS.textSecondary, fontSize: '0.75rem' }}>{activeBorrows}/6 Borrowed</small>
         </div>
       </div>
     </aside>
