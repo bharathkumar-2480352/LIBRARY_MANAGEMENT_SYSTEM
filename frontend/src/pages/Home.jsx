@@ -51,7 +51,6 @@ const BookShelf = ({ title, books, cart, onBookClick, showBadge }) => {
     <div className="mb-5">
       <div className="d-flex justify-content-between align-items-center mb-3 px-2">
         <h4 className="mb-0 fw-bold" style={{ color: COLORS.textPrimary, letterSpacing: '-0.5px' }}>{title}</h4>
-        <span style={{ color: COLORS.textPrimary, cursor: 'pointer', fontSize: '0.85rem', fontWeight: '500' }}>View All &rarr;</span>
       </div>
       <div className="position-relative group">
         <button onClick={() => scroll('left')} className="btn position-absolute top-50 translate-middle-y rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ left: '0px', width: '36px', height: '36px', backgroundColor: COLORS.white, color: COLORS.textPrimary, zIndex: 10, border: 'none' }}><ChevronLeft size={20} /></button>
