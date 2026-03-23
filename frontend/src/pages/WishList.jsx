@@ -1,72 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { ShoppingCart, Trash2 } from 'lucide-react';
+import useStore from '../store/useStore';
+import { COLORS } from '../utils/theme';
 
-const WishList = () => {
-    const [wishlist, setWishlist] = useState([]);
+const Wishlist = () => {
+  // Update: Destructure toggleWishlist instead of removeFromWishlist
+  const { wishlist, addToCart, toggleWishlist } = useStore();
 
-    useEffect(() => {
-        // Mock data matching the UI layout
-        setWishlist([
-            { id: 1, title: '1984', author: 'George Orwell', image: 'https://via.placeholder.com/150x220', price: 19.99 },
-            { id: 2, title: 'Dune', author: 'Frank Herbert', image: 'https://via.placeholder.com/150x220', price: 19.99 },
-            { id: 3, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', image: 'https://via.placeholder.com/150x220', price: 19.99 },
-        ]);
-    }, []);
+  return (
+    <div className="p-4 w-100" style={{ minHeight: '100vh', backgroundColor: '#F9F6F2' }}>
+      <h2 className="mb-4 fw-bold" style={{ color: COLORS.textPrimary, fontFamily: 'serif' }}>
+        My Wishlist
+      </h2>
 
-    const removeFromWishlist = (id) => {
-        setWishlist(wishlist.filter(book => book.id !== id));
-    };
-
-    const addToCart = (book) => {
-        console.log("Added to cart:", book.title);
-        // Add your cart logic here
-    };
-
-    return (
-        <div className="container-fluid py-4 ml-md-5" style={{ backgroundColor: '#F8F3EE', minHeight: '100vh' }}>
-            <h2 className="mb-4 font-weight-bold" style={{ color: '#724E2C', fontFamily: 'serif' }}>My Wishlist</h2>
-
-            {wishlist.length === 0 ? (
-                <div className="text-center mt-5">
-                    <p className="text-muted">Your wishlist is empty.</p>
-                </div>
-            ) : (
-                <div className="row">
-                    {wishlist.map(book => (
-                        <div key={book.id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
-                            {/* Book Card Container */}
-                            <div className="card h-100 border-0 shadow-sm text-center p-3"
-                                style={{ borderRadius: '15px', backgroundColor: '#E8DED3' }}>
-
-                                {/* Image Wrapper */}
-                                <div className="bg-white p-2 mb-3 shadow-sm mx-auto" style={{ borderRadius: '10px', width: 'fit-content' }}>
-                                    <img src={book.image} className="card-img-top img-fluid" alt={book.title}
-                                        style={{ borderRadius: '5px', maxHeight: '200px' }} />
-                                </div>
-
-                                <div className="card-body d-flex flex-column p-0">
-                                    <h5 className="card-title mb-1 font-weight-bold text-dark">{book.title}</h5>
-                                    <p className="card-text text-muted small mb-3">{book.author}</p>
-                                    <button
-                                        onClick={() => addToCart(book)}
-                                        className="btn btn-block mb-2 py-2 d-flex align-items-center justify-content-center"
-                                        style={{ backgroundColor: '#FFFFFF', color: '#724E2C', borderRadius: '8px', border: '1px solid #D6C7B7' }}>
-                                        <span className="mr-2">🛒</span> Add to Cart
-                                    </button>
-
-                                    <button
-                                        onClick={() => removeFromWishlist(book.id)}
-                                        className="btn btn-block py-2 d-flex align-items-center justify-content-center text-white"
-                                        style={{ backgroundColor: '#B2967D', borderRadius: '8px' }}>
-                                        <span className="mr-2">🗑️</span> Remove
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+      <div className="container-fluid px-0">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          {wishlist.length > 0 ? (
+            wishlist.map((book) => (
+              <div className="col d-flex justify-content-center" key={book.id}>
+                <WishlistCard 
+                  book={book} 
+                  onAddToCart={() => addToCart(book)}
+                  // Use toggleWishlist here
+                  onRemove={() => toggleWishlist(book)}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-12 text-center py-5">
+              <p style={{ color: COLORS.textSecondary }}>Your wishlist is empty.</p>
+            </div>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default WishList;
+// --- Updated Card to match your image exactly ---
+const WishlistCard = ({ book, onAddToCart, onRemove }) => {
+  return (
+    <div 
+      className="p-3 shadow-sm" 
+      style={{ 
+        backgroundColor: '#F5E6D3', // Warm tan background
+        borderRadius: '12px',
+        border: '1px solid #D1C4B2',
+        width: '210px',
+      }}
+    >
+      {/* The White Inset Frame for the Cover */}
+      <div 
+        className="mb-3 d-flex justify-content-center align-items-center bg-white"
+        style={{ 
+          height: '220px', 
+          borderRadius: '6px', 
+          border: '1px solid #C4B5A2',
+          padding: '10px',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+        }}
+      >
+        <img 
+          src={book.cover} 
+          alt={book.title} 
+          style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} 
+        />
+      </div>
+
+      <div className="d-flex flex-column gap-2">
+        <button 
+          onClick={onAddToCart}
+          className="btn btn-sm d-flex align-items-center justify-content-center gap-2 py-2 w-100"
+          style={{ 
+            backgroundColor: '#FFFFFF', 
+            color: '#333', 
+            borderRadius: '6px', 
+            border: '1px solid #CCC',
+            fontWeight: '600',
+            fontSize: '0.8rem'
+          }}
+        >
+          <ShoppingCart size={14} /> Add to Cart
+        </button>
+
+        <button 
+          onClick={onRemove}
+          className="btn btn-sm d-flex align-items-center justify-content-center gap-2 py-2 w-100"
+          style={{ 
+            backgroundColor: '#959595', // Matching the grey in the image
+            color: '#FFFFFF', 
+            borderRadius: '6px', 
+            border: 'none',
+            fontWeight: '600',
+            fontSize: '0.8rem'
+          }}
+        >
+          <Trash2 size={14} /> Remove
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Wishlist;
