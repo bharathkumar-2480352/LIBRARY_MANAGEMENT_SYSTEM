@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import MyLibrary from './pages/MyLibrary'; 
 import Profile from './pages/profile';
+import WishList from './pages/WishList';
 // import MyLibrary from './pages/MyLibrary'; // You will create this later!
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/my-library" element={<MyLibrary />} /> 
           {/* <Route path="/my-library" element={<MyLibrary />} /> */}
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/wishlist" element={<WishList />} />
         </Route>
         
       </Routes>
