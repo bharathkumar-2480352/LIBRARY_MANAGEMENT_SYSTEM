@@ -10,7 +10,7 @@ import {
   ArrowLeft,
   UserRoundPen
 } from 'lucide-react';
-import profilePic from '../assets/profilepic.webp';
+import profilePic from '../assets/profilepic.jpg';
 import {useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 
