@@ -1,234 +1,191 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import monkeyLogo from '/ReadMonkey-icon.png'; 
 
 const Login = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+  const [isLoginView, setIsLoginView] = useState(true);
   const [error, setError] = useState('');
-  
+
   // Form States
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
-    identifier: '' // For login (Email or Username)
-  });
-
-  // Initialize "Database" in localStorage
-  useEffect(() => {
-    if (!localStorage.getItem('userDatabase')) {
-      localStorage.setItem('userDatabase', JSON.stringify([]));
-    }
-  }, []);
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(''); // Clear error when typing
-  };
-
-  const validateEmail = (email) => {
-    return String(email).toLowerCase().match(/\S+@\S+\.\S+/);
-  };
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    const { fullName, email, username, password, confirmPassword } = formData;
-    const db = JSON.parse(localStorage.getItem('userDatabase'));
-
-    // Validation
-    if (!fullName || !email || !username || !password) {
-      setError('Please fill all fields');
-      return;
-    }
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-    if (db.find(u => u.email === email.toLowerCase())) {
-      setError('Email already exists');
-      return;
-    }
-    if (db.find(u => u.username === username)) {
-      setError('Username already taken');
-      return;
-    }
-
-    // Success - Save User
-    const newUser = { fullName, email: email.toLowerCase(), username, password };
-    db.push(newUser);
-    localStorage.setItem('userDatabase', JSON.stringify(db));
-    alert('Account created successfully!');
-    setIsLogin(true);
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const { identifier, password } = formData;
-    const db = JSON.parse(localStorage.getItem('userDatabase'));
-
-    if (!identifier || !password) {
-      setError('Please enter both credentials');
-      return;
-    }
-
-    const user = db.find(u => 
-      u.email === identifier.toLowerCase() || u.username === identifier
-    );
-
-    if (!user) {
-      setError('Account not found. Please Sign Up.');
-      return;
-    }
-
-    if (user.password === password) {
-      alert(`Welcome back, ${user.fullName}!`);
-      window.location.href = '/home'; // Or use useNavigate() from react-router-dom
+    setError('');
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      navigate('/');
     } else {
-      setError('Incorrect password');
+      setError('Account not found. Please register.');
     }
   };
 
+  const handleRegister = (e) => {
+    e.preventDefault();
+    setError('');
+    if (!fullName || !email || !password || !confirmPassword) {
+      setError('Please fill all fields.');
+      return;
+    }
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const newUser = { fullName, email, password };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Account created! Please login.');
+    setIsLoginView(true);
+  };
+
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        {/* Left Side - Image */}
-        <div style={styles.imageSide}></div>
+    <div className="login-wrapper d-flex justify-content-center align-items-center">
+      <style>{`
+        .login-wrapper {
+          background-color: #fcf9f2;
+          height: 100vh;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden; 
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .login-content {
+          width: 100%;
+          max-width: 520px; 
+          margin-top: -60px; 
+        }
+        .login-header-logo {
+          width: 55px; 
+          height: 55px;
+          object-fit: contain;
+        }
+        .brand-logo {
+          color: #3b2b1a;
+          font-weight: 800;
+          font-size: 1.6rem;
+          margin-top: -10px; 
+          letter-spacing: -0.5px;
+        }
+        .login-card {
+          background: white;
+          border: 8px solid #eaddca; 
+          border-radius: 25px; 
+          padding: 30px 40px;
+          box-shadow: 0 4px 15px rgba(59, 43, 26, 0.05); 
+        }
+        .form-title {
+          color: #3b2b1a;
+          font-weight: 400; /* Removed bold (changed from 700 to 400) */
+          letter-spacing: -0.5px;
+        }
+        .custom-input {
+          background-color: #fff;
+          border: 1px solid #ced4da;
+          padding: 10px;
+          border-radius: 8px;
+          font-size: 0.95rem;
+        }
+        .wood-btn {
+          background: linear-gradient(to bottom, #dcb78c 0%, #c49c71 100%);
+          border: 1px solid #b3895d;
+          color: #3b2b1a;
+          font-weight: 700;
+          padding: 12px;
+          border-radius: 10px;
+          letter-spacing: 0.5px;
+        }
+        .toggle-text {
+          cursor: pointer;
+          font-weight: 700;
+          text-decoration: underline;
+          color: #3b2b1a;
+        }
+        .form-label {
+          color: #3b2b1a;
+          font-weight: 600;
+          font-size: 0.85rem;
+        }
+      `}</style>
 
-        {/* Right Side - Form */}
-        <div style={styles.formSide}>
-          <div style={styles.logo}>LOGO</div>
-          
-          <h2>{isLogin ? 'LOGIN / SIGNUP' : 'CREATE ACCOUNT'}</h2>
-          
-          {error && <div style={styles.errorMsg}>{error}</div>}
+      <div className="login-content">
+        <div className="text-center mb-2">
+          <div className="d-flex flex-column align-items-center">
+            <img src={monkeyLogo} alt="Logo" className="login-header-logo" />
+            <h2 className="brand-logo">ReadMonkey</h2>
+          </div>
+        </div>
 
-          <form style={styles.form} onSubmit={isLogin ? handleLogin : handleSignup}>
-            {!isLogin && (
-              <>
-                <input 
-                  type="text" name="fullName" placeholder="Full Name" 
-                  style={styles.input} onChange={handleInputChange} 
-                />
-                <input 
-                  type="email" name="email" placeholder="Email" 
-                  style={styles.input} onChange={handleInputChange} 
-                />
-              </>
-            )}
+        <div className="login-card shadow-sm">
+          <div className="card-body-custom">
+            
+            {error && <div className="alert alert-danger py-1 small text-center mb-3 fw-bold">{error}</div>}
 
-            <input 
-              type="text" 
-              name={isLogin ? "identifier" : "username"} 
-              placeholder={isLogin ? "Username/Email" : "Username"} 
-              style={styles.input} 
-              onChange={handleInputChange} 
-            />
-
-            <input 
-              type="password" name="password" placeholder="Password" 
-              style={styles.input} onChange={handleInputChange} 
-            />
-
-            {!isLogin && (
-              <input 
-                type="password" name="confirmPassword" placeholder="Confirm Password" 
-                style={styles.input} onChange={handleInputChange} 
-              />
-            )}
-
-            <div style={styles.btnGroup}>
-              {isLogin ? (
-                <>
-                  <button type="submit" style={styles.btn}>LOGIN</button>
-                  <button type="button" style={styles.btn} onClick={() => setIsLogin(false)}>SIGNUP</button>
-                </>
-              ) : (
-                <div style={{width: '100%', textAlign: 'center'}}>
-                  <button type="submit" style={{...styles.btn, width: '100%'}}>SIGNUP</button>
-                  <p style={styles.toggleText} onClick={() => setIsLogin(true)}>
-                    Already have an account? Login
-                  </p>
+            {isLoginView ? (
+              <div className="form-fade">
+                <h5 className="text-center mb-4 form-title">Log in to your library</h5>
+                <div className="row">
+                  <div className="col-12 mb-3">
+                    <label className="form-label">Email Address</label>
+                    <input type="email" className="form-control custom-input" placeholder="reader@readowl.co" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className="col-12 mb-4">
+                    <div className="d-flex justify-content-between">
+                      <label className="form-label">Password</label>
+                      <a href="#" className="small text-muted text-decoration-none fw-medium">Forgot?</a>
+                    </div>
+                    <input type="password" className="form-control custom-input" placeholder="•••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
                 </div>
-              )}
-            </div>
-          </form>
+
+                <button className="btn wood-btn w-100 mb-3" onClick={handleLogin}>LOG IN</button>
+                <div className="text-center mb-3"><small className="text-muted fw-medium">Or log in with</small></div>
+                
+                <button className="btn btn-outline-secondary w-100 mb-4 d-flex align-items-center justify-content-center py-2 fw-bold" style={{ fontSize: '0.85rem', borderRadius: '10px' }}>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G" width="16" className="me-2"/>
+                    Log in with Google
+                </button>
+
+                <div className="text-center">
+                  <p className="small mb-0 fw-medium">New to ReadMonkey? <span className="toggle-text" onClick={() => setIsLoginView(false)}>Register Here</span></p>
+                </div>
+              </div>
+            ) : (
+              <div className="form-fade">
+                <h5 className="text-center mb-4 form-title">Register for your library</h5>
+                <div className="mb-3">
+                  <label className="form-label">Full Name</label>
+                  <input type="text" className="form-control custom-input" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Email Address</label>
+                  <input type="email" className="form-control custom-input" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="row mb-4">
+                    <div className="col-6">
+                        <label className="form-label">Password</label>
+                        <input type="password" className="form-control custom-input" placeholder="••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <div className="col-6">
+                        <label className="form-label">Confirm</label>
+                        <input type="password" className="form-control custom-input" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    </div>
+                </div>
+                <button className="btn wood-btn w-100 mb-3" onClick={handleRegister}>NEXT</button>
+                <p className="text-center small mb-0 fw-medium">Already a member? <span className="toggle-text" onClick={() => setIsLoginView(true)}>Log In Here</span></p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-// CSS-in-JS Styles
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5ece0',
-    padding: '20px'
-  },
-  card: {
-    display: 'flex',
-    width: '100%',
-    maxWidth: '850px',
-    backgroundColor: '#fff',
-    borderRadius: '30px',
-    overflow: 'hidden',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-    flexWrap: 'wrap' // For responsiveness
-  },
-  imageSide: {
-    flex: '1 1 400px',
-    minHeight: '300px',
-    background: "url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat",
-  },
-  formSide: {
-    flex: '1 1 400px',
-    padding: '40px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  logo: {
-    width: '100px',
-    height: '60px',
-    backgroundColor: '#8b5a2b',
-    color: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '8px',
-    fontWeight: 'bold',
-    marginBottom: '20px'
-  },
-  form: { width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' },
-  input: {
-    padding: '15px',
-    borderRadius: '10px',
-    border: 'none',
-    backgroundColor: '#feffea',
-    fontSize: '16px',
-    outline: 'none'
-  },
-  btnGroup: { display: 'flex', gap: '15px', marginTop: '10px' },
-  btn: {
-    padding: '12px 30px',
-    borderRadius: '12px',
-    border: 'none',
-    background: 'linear-gradient(to bottom, #5d3a1a, #2b1a0a)',
-    color: '#d4a373',
-    fontWeight: 'bold',
-    cursor: 'pointer'
-  },
-  errorMsg: { color: 'red', fontSize: '14px', marginBottom: '10px' },
-  toggleText: { marginTop: '15px', cursor: 'pointer', fontSize: '14px', color: '#5d3a1a' }
 };
 
 export default Login;
