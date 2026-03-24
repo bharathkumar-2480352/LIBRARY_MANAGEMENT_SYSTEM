@@ -5,6 +5,8 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import MyLibrary from './pages/MyLibrary'; 
+import Profile from './pages/profile';
+// import MyLibrary from './pages/MyLibrary'; // You will create this later!
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/my-library" element={<MyLibrary />} /> 
+          {/* <Route path="/my-library" element={<MyLibrary />} /> */}
+          <Route path="/profile" element={<Profile/>}/>
         </Route>
         
       </Routes>
