@@ -27,8 +27,8 @@ const Profile=()=>{
 };
   return(
     
-    <div style={{backgroundColor:"#FFFFFF",height:"100vh",padding:"20px"}}>
-      <div style={{backgroundColor:"#F8F3EE", height:"620px" ,width:"980px",borderRadius:"20px",padding:"15px"}}>
+    <div style={{backgroundColor:"#FFFFFF",height:"100%",padding:"20px"}}>
+      <div style={{backgroundColor:"#F8F3EE",height:"100%", minHeight:"620px" ,maxWidth:"980px",width:"100%",borderRadius:"20px",padding:"15px"}}>
       { view=== "profile" ? (
         <>
       <div className='d-flex justify-content-between align-items-center'>
@@ -93,7 +93,7 @@ const Profile=()=>{
                     <div className="me-3 icon-badge">
                       <CalendarCheck size={30} className='mb-5' />
                     </div>
-                    <div>
+                    <div className="">
                       <div className="field-label mb-0">Membership Status</div>
                       <div className="fw-bold fs-5 pb-2">245 Days Remaining</div>
                       <button 
@@ -111,6 +111,7 @@ const Profile=()=>{
                       </div>
                   </div>
                 </div>
+                
                 <div className="card soft-card mb-4 shadow-sm">
                   <div className="card-body">
                     <div className="field-label mb-2">Access</div>
@@ -122,7 +123,7 @@ const Profile=()=>{
                     />
                   </div>
                 </div>
-                <div className="d-flex justify-content-end" style={{marginTop:"170px",marginRight:"20px"}}>
+                <div className="mt-0 mt-lg-5 pt-lg-5 d-flex justify-content-center justify-content-lg-end pb-3"> {/*style={{marginTop:"170px",marginRight:"20px"}}*/}
                   <button
                     style={{backgroundColor:"#E8DED3",borderStyle:"none"}}
                     className="btn btn-outline-dark d-flex align-items-center gap-2"
@@ -143,7 +144,7 @@ const Profile=()=>{
       </>
       ):(
         <>
-  <div className="d-flex align-items-center gap-3 mb-4">
+    <div className="d-flex align-items-center gap-3 mb-4">
     <button 
       onClick={() => setView("profile")} 
       className="btn p-0 border-0 shadow-none"
@@ -160,7 +161,7 @@ const Profile=()=>{
       <div className="col-md-6">
         <div className="d-flex align-items-center gap-2 mb-2">
           <User size={18} className="text-muted" />
-          <label className="fw-bold mb-0">First Name</label>
+          <label className="fw-bold mb-0 ">First Name</label>
         </div>
         <input 
           type="text" 
