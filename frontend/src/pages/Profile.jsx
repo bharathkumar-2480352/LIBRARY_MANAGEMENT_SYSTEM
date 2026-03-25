@@ -93,7 +93,7 @@ const Profile=()=>{
                     <div className="me-3 icon-badge">
                       <CalendarCheck size={30} className='mb-5' />
                     </div>
-                    <div className="">
+                    <div>
                       <div className="field-label mb-0">Membership Status</div>
                       <div className="fw-bold fs-5 pb-2">245 Days Remaining</div>
                       <button 
