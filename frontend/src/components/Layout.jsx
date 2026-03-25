@@ -34,8 +34,6 @@ export default function Layout() {
   return (
     <div className="d-flex flex-column flex-lg-row" style={{ backgroundColor: COLORS.mainBg, minHeight: '100vh', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
       <style>{responsiveCSS}</style>
-      
-      {/* Mobile Top Header (Only visible on small screens) */}
       <div className="d-lg-none d-flex justify-content-between align-items-center p-3 shadow-sm bg-white sticky-top">
         <div className="d-flex align-items-center gap-3">
           <button onClick={() => setIsSidebarOpen(true)} className="btn p-0 border-0" style={{ color: COLORS.textPrimary }}>

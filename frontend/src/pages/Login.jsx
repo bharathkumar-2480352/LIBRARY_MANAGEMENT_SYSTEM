@@ -7,24 +7,18 @@ import monkeyLogo from '/ReadMonkey-icon.png';
 const Login = () => {
   const handleSuccess = async (credentialResponse) => {
     try {
-      // 1. Get the JWT from Google
       const token = credentialResponse.credential;
-
-      // 2. Send it to your Node.js backend
       const response = await axios.post('http://localhost:5000/api/auth/google-login', {
         token: token
       });
-
-      // 3. Check for success and show the alert
       if (response.status === 200) {
         const userName = response.data.user.name;
-
-        // Show the alert box
         alert(`Login Successful! Welcome to the Library, ${userName}.`);
-
-        // 4. Store the backend-generated token for later use
+        const { name, email, picture, id } = response.data.user; 
+        console.log("User Name:", name);
+        console.log("User Email:", email);
+        console.log("Profile Pic:", picture);
         localStorage.setItem('libraryToken', response.data.token);
-
         console.log('Backend response:', response.data);
       }
 
@@ -36,8 +30,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoginView, setIsLoginView] = useState(true);
   const [error, setError] = useState('');
-
-  // Form States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
