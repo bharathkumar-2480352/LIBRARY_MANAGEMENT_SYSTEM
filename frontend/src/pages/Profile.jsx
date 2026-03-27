@@ -11,12 +11,36 @@ import {
   UserRoundPen
 } from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 const Profile=()=>{
 
   const navigate=useNavigate();
   const [view,setView]=useState("profile");
+  const [userData, setUserData] = useState({
+    fullName: 'Guest',
+    email: '',
+    phone: 'Not provided',
+    address: 'Not provided'
+  });
+  const [tempData, setTempData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: ""
+  });
+
+  useEffect(() => {
+    // Fetch user from localStorage
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      setUserData(JSON.parse(savedUser));
+    }
+  }, []);
+
+  // Split full name for display if needed
+  const firstName = userData.fullName ? userData.fullName.split(' ')[0] : 'Reader';
+  const lastName = userData.fullName ? userData.fullName.split(' ').slice(1).join(' ') : '';
   
   const inputStyle = {
   backgroundColor: '#fdfcfb',
@@ -25,6 +49,29 @@ const Profile=()=>{
   padding: '12px',
   fontSize: '15px'
 };
+   const handleSave = () => {
+    const updatedUser = {
+      ...userData,
+      fullName: `${tempData.firstName} ${tempData.lastName}`.trim(),
+      phone: tempData.phone,
+      address: tempData.address
+    };
+
+
+    setUserData(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    setView("profile");
+  };
+  const handleEditClick = () => {
+    const [first, ...rest] = (userData.fullName || "").split(" ");
+    setTempData({
+      firstName: first || "",
+      lastName: rest.join(" ") || "",
+      phone: userData.phone,
+      address: userData.address
+    });
+    setView("edit");
+  };
   return(
     
     <div style={{backgroundColor:"#FFFFFF",height:"100%",padding:"20px"}}>
@@ -33,7 +80,7 @@ const Profile=()=>{
         <>
       <div className='d-flex justify-content-between align-items-center'>
       <h1>Account Setting and Profile</h1>
-      <button onClick={()=>setView("edit")} style={{padding:"7px",margin:"0px",borderRadius:"5px",backgroundColor:"#E8DED3",borderStyle:"none"}}className="btn btn-outline-dark btn-md  d-flex align-items-center gap-2"  type="button"><Pencil size={16} />Edit</button>
+      <button onClick={handleEditClick} style={{padding:"7px",margin:"0px",borderRadius:"5px",backgroundColor:"#E8DED3",borderStyle:"none"}}className="btn btn-outline-dark btn-md  d-flex align-items-center gap-2"  type="button"><Pencil size={16} />Edit</button>
       </div>
       <div className='row g-4'>
         <div className='col-12 col-lg-7'>
@@ -56,31 +103,31 @@ const Profile=()=>{
             <ProfileField
                     icon={<User size={18} />}
                     label="First Name:"
-                    value="Stephan"
+                    value={firstName}
                     line={true}
                   />
             <ProfileField
                     icon={<User size={18} />}
                     label="Last Name:"
-                    value="Vaughan"
+                    value={lastName}
                     line={true}
                   />
                   <ProfileField
                     icon={<Phone size={18} />}
                     label="Mobile Number:"
-                    value="+1 (555) 123-4567"
+                    value={userData.phone || "Not provided"}
                     line={true}
                   />
                   <ProfileField
                     icon={<MapPin size={18} />}
                     label="Address:"
-                    value="123 Library Lane, Booktown, UK"
+                    value={userData.address || "Not provided"}
                     line={true}
                   />
                   <ProfileField
                     icon={<Mail size={18} />}
                     label="Email:"
-                    value="stephan.v@readowl.co"
+                    value={userData.email}
                     helper="Email cannot be changed"
                     line={false}
                   />
@@ -166,7 +213,8 @@ const Profile=()=>{
         <input 
           type="text" 
           className="form-control custom-input" 
-          defaultValue="Stephan"
+          value={tempData.firstName}
+          onChange={(e) => setTempData({...tempData, firstName: e.target.value})}
           style={inputStyle}
         />
       </div>
@@ -180,7 +228,8 @@ const Profile=()=>{
         <input 
           type="text" 
           className="form-control" 
-          defaultValue="Vaughan"
+          value={tempData.lastName}
+          onChange={(e) => setTempData({...tempData, lastName: e.target.value})}
           style={inputStyle}
         />
       </div>
@@ -194,7 +243,8 @@ const Profile=()=>{
         <input 
           type="tel" 
           className="form-control" 
-          defaultValue="+1 (555) 123-4567"
+          value={tempData.phone}
+          onChange={(e)=>{setTempData({...tempData,phone:e.target.value})}}
           style={inputStyle}
         />
       </div>
@@ -208,7 +258,8 @@ const Profile=()=>{
         <textarea 
           className="form-control" 
           rows="3"
-          defaultValue="123 Library Lane, Booktown, UK"
+          value={tempData.address}
+          onChange={(e)=>{setTempData({...tempData,address:e.target.value})}}
           style={inputStyle}
         ></textarea>
       </div>
@@ -217,7 +268,7 @@ const Profile=()=>{
       <div className="col-12 d-flex gap-3 mt-4">
         <button
           type="button"
-          onClick={() => setView("profile")}
+          onClick={handleSave}
           className="btn px-4 fw-bold"
           style={{ backgroundColor: "#E8DED3", border: "none", borderRadius: "8px" }}
         >
