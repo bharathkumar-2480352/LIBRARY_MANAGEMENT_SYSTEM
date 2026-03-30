@@ -53,7 +53,6 @@ const Wishlist = () => {
                         <span className="badge fw-normal" style={{ backgroundColor: COLORS.sidebarBg, color: COLORS.textSecondary, fontSize: '0.7rem' }}>{book.genre}</span>
                       </div>
 
-                      {/* Action Buttons */}
                       <div className="d-flex flex-column gap-2">
                         {/* Primary Action: Add or Remove from Bag */}
                         <button 
