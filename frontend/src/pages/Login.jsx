@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import monkeyLogo from '/ReadMonkey-icon.png';
+import initialUsers from '../data/users.json';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Login = () => {
     const existingData = localStorage.getItem('users');
     // Only initialize if the key is completely missing or is an empty array string
     if (!existingData || existingData === "[]") {
-      localStorage.setItem('users', []);
+      localStorage.setItem('users', JSON.stringify(initialUsers));
     }
   }, []);
 
@@ -240,7 +241,7 @@ const Login = () => {
                   <ErrorMsg field="confirmPassword" />
                 </div>
               </div>
-              <button className="wood-btn" onClick={handleRegister}>Register</button>
+              <button className="wood-btn" onClick={handleRegister}>NEXT</button>
               <p className="text-center small mb-0 mt-3">Already a member? <span className="toggle-text" onClick={() => { setIsLoginView(true); setErrors({}); }}>Log In Here</span></p>
             </div>
           )}
