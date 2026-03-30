@@ -3,8 +3,11 @@ import { Home as HomeIcon, BookOpen, Heart, ShoppingCart, User, X } from 'lucide
 import { NavLink } from 'react-router-dom';
 import useStore from '../store/useStore';
 import { COLORS } from '../utils/theme';
+import { useNavigate } from "react-router-dom";
+
 
 export default function Sidebar({ onOpenCart, isOpen, onClose }) {
+  const navigate=useNavigate();
   const { activeBorrows, getCartTotal } = useStore();
   const totalCartItems = getCartTotal();
 
@@ -51,22 +54,39 @@ export default function Sidebar({ onOpenCart, isOpen, onClose }) {
             <BookOpen size={22} /> My library
           </NavLink>
           
-          <button onClick={onClose} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill" style={{ color: COLORS.textSecondary, fontWeight: '500' }}>
+          <NavLink to="/wishlist" onClick={onClose} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill" style={getNavLinkStyle}>
             <Heart size={22} /> Wishlist
-          </button>
-          
-          <button onClick={() => { onClose(); onOpenCart(); }} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill position-relative" style={{ color: COLORS.textSecondary, fontWeight: '500' }}>
-            <ShoppingCart size={22} /> Book Bag
-            {totalCartItems > 0 && <span className="position-absolute end-0 me-3 badge rounded-pill" style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white }}>{totalCartItems}</span>}
-          </button>
+          </NavLink>
+
+          <NavLink 
+            to="/cart" 
+            onClick={onClose} 
+            className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill position-relative" 
+            style={getNavLinkStyle}
+          >
+            <ShoppingCart size={22} /> 
+            <span>Book Bag</span>
+            {totalCartItems > 0 && (
+              <span 
+                className="position-absolute end-0 me-3 badge rounded-pill shadow-sm" 
+                style={{ 
+                  backgroundColor: COLORS.textPrimary, 
+                  color: COLORS.white,
+                  fontSize: '0.7rem' 
+                }}
+              >
+                {totalCartItems}
+              </span>
+            )}
+          </NavLink>
         </nav>
       </div>
 
-      <div className="p-3 mt-auto rounded-3 d-flex align-items-center gap-3 cursor-pointer" style={{ backgroundColor: COLORS.white, boxShadow: `0 2px 10px ${COLORS.shelfShadow}` }}>
-        <div className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '40px', height: '40px', backgroundColor: COLORS.activeBg, color: COLORS.textPrimary }}><User size={20} /></div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <h6 className="mb-0 text-truncate" style={{ color: COLORS.textPrimary, fontSize: '0.9rem', fontWeight: '600' }}>Uday Gandhi</h6>
-          <small className="text-truncate d-block" style={{ color: COLORS.textSecondary, fontSize: '0.75rem' }}>{activeBorrows}/6 Borrowed</small>
+      <div onClick={() => navigate('/profile')} className="p-3 mt-auto rounded-3 d-flex align-items-center gap-3 cursor-pointer" style={{ backgroundColor: COLORS.white,cursor: 'pointer', boxShadow: `0 2px 10px ${COLORS.shelfShadow}` }}>
+        <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: COLORS.activeBg, color: COLORS.textPrimary }}><User size={20} /></div>
+        <div style={{ flex: 1 }}>
+          <h6 className="mb-0" style={{ color: COLORS.textPrimary, fontSize: '0.9rem', fontWeight: '600' }}>Uday Gandhi</h6>
+          <small style={{ color: COLORS.textSecondary, fontSize: '0.75rem' }}>{activeBorrows}/6 Borrowed</small>
         </div>
       </div>
     </aside>

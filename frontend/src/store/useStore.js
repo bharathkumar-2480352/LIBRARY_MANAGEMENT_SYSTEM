@@ -3,7 +3,8 @@ import { create } from 'zustand';
 const useStore = create((set, get) => ({
   user: null,
   cart: [], 
-  activeBorrows: 0, // Changed from 2 to 0 for testing a brand new user
+  wishlist: [], // NEW: Track wishlisted items
+  activeBorrows: 0,
   
   login: (userData) => set({ user: userData }),
 
@@ -48,7 +49,18 @@ const useStore = create((set, get) => ({
     set({ cart: cart.filter((item) => item.id !== bookId) });
   },
   
-  clearCart: () => set({ cart: [] })
+  clearCart: () => set({ cart: [] }),
+
+  // NEW: Wishlist Toggle Logic
+  toggleWishlist: (book) => {
+    const { wishlist } = get();
+    const exists = wishlist.some(item => item.id === book.id);
+    if (exists) {
+      set({ wishlist: wishlist.filter(item => item.id !== book.id) });
+    } else {
+      set({ wishlist: [...wishlist, book] });
+    }
+  }
 }));
 
 export default useStore;

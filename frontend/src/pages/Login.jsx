@@ -1,14 +1,35 @@
-
+import { GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import monkeyLogo from '/ReadMonkey-icon.png'; 
+import monkeyLogo from '/ReadMonkey-icon.png';
 
 const Login = () => {
+  const handleSuccess = async (credentialResponse) => {
+    try {
+      const token = credentialResponse.credential;
+      const response = await axios.post('http://localhost:5000/api/auth/google-login', {
+        token: token
+      });
+      if (response.status === 200) {
+        const userName = response.data.user.name;
+        alert(`Login Successful! Welcome to the Library, ${userName}.`);
+        const { name, email, picture, id } = response.data.user; 
+        console.log("User Name:", name);
+        console.log("User Email:", email);
+        console.log("Profile Pic:", picture);
+        localStorage.setItem('libraryToken', response.data.token);
+        console.log('Backend response:', response.data);
+      }
+
+    } catch (error) {
+      console.error('Login Failed during backend sync:', error);
+      alert("Login failed. Please check if the backend server is running.");
+    }
+  };
   const navigate = useNavigate();
   const [isLoginView, setIsLoginView] = useState(true);
   const [error, setError] = useState('');
-
-  // Form States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -124,7 +145,7 @@ const Login = () => {
 
         <div className="login-card shadow-sm">
           <div className="card-body-custom">
-            
+
             {error && <div className="alert alert-danger py-1 small text-center mb-3 fw-bold">{error}</div>}
 
             {isLoginView ? (
@@ -146,11 +167,15 @@ const Login = () => {
 
                 <button className="btn wood-btn w-100 mb-3" onClick={handleLogin}>LOG IN</button>
                 <div className="text-center mb-3"><small className="text-muted fw-medium">Or log in with</small></div>
-                
-                <button className="btn btn-outline-secondary w-100 mb-4 d-flex align-items-center justify-content-center py-2 fw-bold" style={{ fontSize: '0.85rem', borderRadius: '10px' }}>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G" width="16" className="me-2"/>
-                    Log in with Google
-                </button>
+                <GoogleLogin
+                  className="mb-4 d-flex align-items-center justify-content-center py-2 fw-bold" style={{ fontSize: '0.85rem', borderRadius: '10px' }}
+                  onSuccess={handleSuccess}
+                  onError={() => {
+                    console.log('Login Failed');
+                    alert("Google Sign-In was unsuccessful.");
+                  }}
+                  useOneTap
+                />
 
                 <div className="text-center">
                   <p className="small mb-0 fw-medium">New to ReadMonkey? <span className="toggle-text" onClick={() => setIsLoginView(false)}>Register Here</span></p>
@@ -168,14 +193,14 @@ const Login = () => {
                   <input type="email" className="form-control custom-input" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="row mb-4">
-                    <div className="col-6">
-                        <label className="form-label">Password</label>
-                        <input type="password" className="form-control custom-input" placeholder="••••" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </div>
-                    <div className="col-6">
-                        <label className="form-label">Confirm</label>
-                        <input type="password" className="form-control custom-input" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                    </div>
+                  <div className="col-6">
+                    <label className="form-label">Password</label>
+                    <input type="password" className="form-control custom-input" placeholder="••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+                  <div className="col-6">
+                    <label className="form-label">Confirm</label>
+                    <input type="password" className="form-control custom-input" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                  </div>
                 </div>
                 <button className="btn wood-btn w-100 mb-3" onClick={handleRegister}>NEXT</button>
                 <p className="text-center small mb-0 fw-medium">Already a member? <span className="toggle-text" onClick={() => setIsLoginView(true)}>Log In Here</span></p>
@@ -189,3 +214,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+//
