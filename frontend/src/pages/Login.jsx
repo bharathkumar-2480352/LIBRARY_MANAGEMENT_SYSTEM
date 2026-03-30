@@ -55,7 +55,7 @@ const Login = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     const loginErrors = {};
 
