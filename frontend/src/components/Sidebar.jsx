@@ -54,14 +54,31 @@ export default function Sidebar({ onOpenCart, isOpen, onClose }) {
             <BookOpen size={22} /> My library
           </NavLink>
           
-          <button onClick={onClose} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill" style={{ color: COLORS.textSecondary, fontWeight: '500' }}>
+          <NavLink to="/wishlist" onClick={onClose} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill" style={getNavLinkStyle}>
             <Heart size={22} /> Wishlist
-          </button>
-          
-          <button onClick={() => { onClose(); onOpenCart(); }} className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill position-relative" style={{ color: COLORS.textSecondary, fontWeight: '500' }}>
-            <ShoppingCart size={22} /> Book Bag
-            {totalCartItems > 0 && <span className="position-absolute end-0 me-3 badge rounded-pill" style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white }}>{totalCartItems}</span>}
-          </button>
+          </NavLink>
+
+          <NavLink 
+            to="/cart" 
+            onClick={onClose} 
+            className="btn text-start d-flex align-items-center gap-3 border-0 py-2 px-3 rounded-pill position-relative" 
+            style={getNavLinkStyle}
+          >
+            <ShoppingCart size={22} /> 
+            <span>Book Bag</span>
+            {totalCartItems > 0 && (
+              <span 
+                className="position-absolute end-0 me-3 badge rounded-pill shadow-sm" 
+                style={{ 
+                  backgroundColor: COLORS.textPrimary, 
+                  color: COLORS.white,
+                  fontSize: '0.7rem' 
+                }}
+              >
+                {totalCartItems}
+              </span>
+            )}
+          </NavLink>
         </nav>
       </div>
 
