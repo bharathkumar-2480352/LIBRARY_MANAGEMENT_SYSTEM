@@ -6,13 +6,7 @@ import {
 import useStore from '../store/useStore';
 
 // Custom Warm Theme
-// Custom Warm Theme
 const THEME = {
-  bg: '#F3EBE1',
-  cardBg: '#FFFFFF',
-  textPrimary: '#3A2E20',
-  textSecondary: '#8A7A66',
-  accent: '#EBE1D5',
   bg: '#F3EBE1',
   cardBg: '#FFFFFF',
   textPrimary: '#3A2E20',
@@ -99,9 +93,6 @@ export default function MyLibrary() {
     padding: '24px',
     display: 'flex',
     flexDirection: 'column'
-    padding: '24px',
-    display: 'flex',
-    flexDirection: 'column'
   };
 
   return (
@@ -145,7 +136,6 @@ export default function MyLibrary() {
                   <div style={{ color: THEME.textSecondary, fontSize: '0.9rem' }}>(Level 3 - Voracious Reader)</div>
                 </div>
               </div>
-              <div className="mt-auto">
               <div className="mt-auto">
                 <div className="progress rounded-pill mb-2" style={{ height: '10px', backgroundColor: THEME.progressBg }}>
                   <div className="progress-bar rounded-pill" role="progressbar" style={{ width: '75%', backgroundColor: THEME.progressFill }}></div>
