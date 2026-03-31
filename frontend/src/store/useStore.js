@@ -3,17 +3,22 @@ import { create } from 'zustand';
 const useStore = create((set, get) => ({
   user: null,
   cart: [], 
-  wishlist: [], // NEW: Track wishlisted items
-  activeBorrows: 0,
+  wishlist: [],
+  borrowedBooks: [], // NEW: Track borrowed books dynamically
   
   login: (userData) => set({ user: userData }),
 
   getCartTotal: () => {
-    return get().cart.reduce((total, item) => total + item.quantity, 0);
+    return get().cart.reduce((total, item) => total + (item.quantity || 1), 0);
+  },
+
+  getActiveBorrowsCount: () => {
+    return get().borrowedBooks.length;
   },
   
   addToCart: (book) => {
-    const { cart, activeBorrows, getCartTotal } = get();
+    const { cart, getActiveBorrowsCount, getCartTotal } = get();
+    const activeBorrows = getActiveBorrowsCount();
     
     if (getCartTotal() + activeBorrows >= 6) {
       alert(`Limit reached! You have ${activeBorrows} active borrows. You can only hold 6 books total.`);
@@ -24,7 +29,8 @@ const useStore = create((set, get) => ({
   },
 
   updateQuantity: (bookId, delta) => {
-    const { cart, activeBorrows, getCartTotal } = get();
+    const { cart, getActiveBorrowsCount, getCartTotal } = get();
+    const activeBorrows = getActiveBorrowsCount();
     const currentTotal = getCartTotal();
 
     set({
@@ -51,7 +57,6 @@ const useStore = create((set, get) => ({
   
   clearCart: () => set({ cart: [] }),
 
-  // NEW: Wishlist Toggle Logic
   toggleWishlist: (book) => {
     const { wishlist } = get();
     const exists = wishlist.some(item => item.id === book.id);
@@ -60,6 +65,27 @@ const useStore = create((set, get) => ({
     } else {
       set({ wishlist: [...wishlist, book] });
     }
+  },
+
+  // NEW: Checkout flow to process bag items into borrowed books
+  checkout: () => {
+    const { cart, borrowedBooks } = get();
+    const today = new Date();
+    
+    // Calculate due date (14 days from today)
+    const dueDate = new Date(today);
+    dueDate.setDate(today.getDate() + 14);
+
+    const checkedOutBooks = cart.map(book => ({
+      ...book,
+      dueDate: dueDate.toISOString(),
+      source: 'My Library'
+    }));
+
+    set({ 
+      borrowedBooks: [...borrowedBooks, ...checkedOutBooks],
+      cart: [] 
+    });
   }
 }));
 
