@@ -28,7 +28,7 @@ const Login = () => {
     const existingData = localStorage.getItem('users');
     // Only initialize if the key is completely missing or is an empty array string
     if (!existingData || existingData === "[]") {
-      localStorage.setItem('users', JSON.stringify(initialUsers));
+      localStorage.setItem('users', []);
     }
   }, []);
 
