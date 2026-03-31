@@ -4,23 +4,27 @@ import useStore from '../store/useStore';
 import { COLORS } from '../utils/theme';
 import BookDetailsModal from '../components/BookDetailsModal';
 
-// Expanded Mock Data with Exclusive E-Books
+// Expanded Mock Data with "availableCopies"
 const MOCK_BOOKS = [
-  { id: 1, title: 'The Pragmatic Programmer', author: 'David Thomas', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Addison-Wesley', year: '1999', pages: 352, cover: 'https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
-  { id: 2, title: 'Clean Code', author: 'Robert C. Martin', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Prentice Hall', year: '2008', pages: 464, cover: 'https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 3, title: 'Dune', author: 'Frank Herbert', genre: 'Fiction', language: 'English', ageGroup: 'Young Adult', publisher: 'Chilton Books', year: '1965', pages: 412, cover: 'https://covers.openlibrary.org/b/isbn/9780441172719-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 4, title: 'Godan', author: 'Munshi Premchand', genre: 'Classic', language: 'Hindi', ageGroup: 'Adult', publisher: 'Saraswati Press', year: '1936', pages: 368, cover: 'https://covers.openlibrary.org/b/isbn/9788188440053-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 5, title: 'Atomic Habits', author: 'James Clear', genre: 'Self-Help', language: 'English', ageGroup: 'Adult', publisher: 'Avery', year: '2018', pages: 320, cover: 'https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
-  { id: 6, title: 'Yayati', author: 'V. S. Khandekar', genre: 'Mythology', language: 'Marathi', ageGroup: 'Adult', publisher: 'Deshmukh & Co', year: '1959', pages: 432, cover: 'https://covers.openlibrary.org/b/isbn/9788177665245-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 7, title: 'Project Hail Mary', author: 'Andy Weir', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Ballantine Books', year: '2021', pages: 496, cover: 'https://covers.openlibrary.org/b/isbn/9780593135204-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
-  { id: 8, title: 'Deep Work', author: 'Cal Newport', genre: 'Business', language: 'English', ageGroup: 'Adult', publisher: 'Grand Central', year: '2016', pages: 304, cover: 'https://covers.openlibrary.org/b/isbn/9781455586691-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
-  { id: 9, title: 'The Winds of Winter', author: 'George R.R. Martin', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Bantam Books', year: '2026', pages: 1024, cover: 'https://covers.openlibrary.org/b/isbn/9780002247412-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
-  { id: 10, title: 'Madhushala', author: 'Harivansh Rai Bachchan', genre: 'Poetry', language: 'Hindi', ageGroup: 'Adult', publisher: 'Rajpal & Sons', year: '1935', pages: 144, cover: 'https://covers.openlibrary.org/b/isbn/9788121601053-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 1, title: 'The Pragmatic Programmer', author: 'David Thomas', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Addison-Wesley', year: '1999', pages: 352, availableCopies: 4, cover: 'https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
+  { id: 2, title: 'Clean Code', author: 'Robert C. Martin', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Prentice Hall', year: '2008', pages: 464, availableCopies: 0, cover: 'https://covers.openlibrary.org/b/isbn/9780132350884-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 3, title: 'Dune', author: 'Frank Herbert', genre: 'Fiction', language: 'English', ageGroup: 'Young Adult', publisher: 'Chilton Books', year: '1965', pages: 412, availableCopies: 2, cover: 'https://covers.openlibrary.org/b/isbn/9780441172719-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 4, title: 'Godan', author: 'Munshi Premchand', genre: 'Classic', language: 'Hindi', ageGroup: 'Adult', publisher: 'Saraswati Press', year: '1936', pages: 368, availableCopies: 1, cover: 'https://covers.openlibrary.org/b/isbn/9788188440053-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
+  { id: 5, title: 'Atomic Habits', author: 'James Clear', genre: 'Self-Help', language: 'English', ageGroup: 'Adult', publisher: 'Avery', year: '2018', pages: 320, availableCopies: 8, cover: 'https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 6, title: 'Yayati', author: 'V. S. Khandekar', genre: 'Mythology', language: 'Marathi', ageGroup: 'Adult', publisher: 'Deshmukh & Co', year: '1959', pages: 432, availableCopies: 3, cover: 'https://covers.openlibrary.org/b/isbn/9788177665245-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
+  { id: 7, title: 'Project Hail Mary', author: 'Andy Weir', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Ballantine Books', year: '2021', pages: 496, availableCopies: 5, cover: 'https://covers.openlibrary.org/b/isbn/9780593135204-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
+  { id: 8, title: 'Deep Work', author: 'Cal Newport', genre: 'Business', language: 'English', ageGroup: 'Adult', publisher: 'Grand Central', year: '2016', pages: 304, availableCopies: 2, cover: 'https://covers.openlibrary.org/b/isbn/9781455586691-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
+  { id: 9, title: 'The Winds of Winter', author: 'George R.R. Martin', genre: 'Fiction', language: 'English', ageGroup: 'Adult', publisher: 'Bantam Books', year: '2026', pages: 1024, availableCopies: 0, cover: 'https://covers.openlibrary.org/b/isbn/9780002247412-M.jpg', isTrending: false, isRecommended: false, isComingSoon: true },
+  { id: 10, title: 'Madhushala', author: 'Harivansh Rai Bachchan', genre: 'Poetry', language: 'Hindi', ageGroup: 'Adult', publisher: 'Rajpal & Sons', year: '1935', pages: 144, availableCopies: 4, cover: 'https://covers.openlibrary.org/b/isbn/9788121601053-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 11, title: 'Diary of a Wimpy Kid', author: 'Jeff Kinney', genre: 'Fiction', language: 'English', ageGroup: '9-12 Years', publisher: 'Amulet Books', year: '2007', pages: 224, availableCopies: 6, cover: 'https://covers.openlibrary.org/b/isbn/9780141324906-M.jpg', isTrending: true, isRecommended: false, isComingSoon: false },
+  { id: 12, title: 'The Very Hungry Caterpillar', author: 'Eric Carle', genre: 'Fiction', language: 'English', ageGroup: '0-5 Years', publisher: 'World Publishing', year: '1969', pages: 26, availableCopies: 1, cover: 'https://covers.openlibrary.org/b/isbn/9780241003008-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
+  { id: 13, title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'MIT Press', year: '2009', pages: 1312, availableCopies: 2, cover: 'https://covers.openlibrary.org/b/isbn/9780262033848-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
+  { id: 14, title: 'Sapiens', author: 'Yuval Noah Harari', genre: 'History', language: 'English', ageGroup: 'Adult', publisher: 'Harvill Secker', year: '2014', pages: 464, availableCopies: 7, cover: 'https://covers.openlibrary.org/b/isbn/9780062316097-M.jpg', isTrending: true, isRecommended: true, isComingSoon: false },
+  { id: 15, title: '1984', author: 'George Orwell', genre: 'Classic', language: 'English', ageGroup: 'Young Adult', publisher: 'Secker & Warburg', year: '1949', pages: 328, availableCopies: 0, cover: 'https://covers.openlibrary.org/b/isbn/9780451524935-M.jpg', isTrending: false, isRecommended: true, isComingSoon: false },
   
-  // NEW: Exclusive E-Books
+  // Exclusive E-Books (No availableCopies needed)
   { id: 21, title: 'The Art of War', author: 'Sun Tzu', genre: 'Classic', language: 'English', ageGroup: 'Adult', publisher: 'Shambhala', year: '2005', pages: 112, cover: 'https://covers.openlibrary.org/b/isbn/9781590302255-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
   { id: 22, title: 'Meditations', author: 'Marcus Aurelius', genre: 'Classic', language: 'English', ageGroup: 'Adult', publisher: 'Modern Library', year: '2002', pages: 256, cover: 'https://covers.openlibrary.org/b/isbn/9780812968255-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
-  { id: 23, title: 'Relativity', author: 'Albert Einstein', genre: 'Tech', language: 'English', ageGroup: 'Adult', publisher: 'Crown', year: '1961', pages: 188, cover: 'https://covers.openlibrary.org/b/isbn/9780517025306-M.jpg', isTrending: false, isRecommended: false, isComingSoon: false, isEbook: true },
 ];
 
 const FILTER_OPTIONS = {
@@ -51,6 +55,7 @@ const BookShelf = ({ title, books, cart, onBookClick, showBadge }) => {
     <div className="mb-5">
       <div className="d-flex justify-content-between align-items-center mb-3 px-2">
         <h4 className="mb-0 fw-bold" style={{ color: COLORS.textPrimary, letterSpacing: '-0.5px' }}>{title}</h4>
+        <span style={{ color: COLORS.textPrimary, cursor: 'pointer', fontSize: '0.85rem', fontWeight: '500' }}>View All &rarr;</span>
       </div>
       <div className="position-relative group">
         <button onClick={() => scroll('left')} className="btn position-absolute top-50 translate-middle-y rounded-circle shadow-sm d-flex align-items-center justify-content-center" style={{ left: '0px', width: '36px', height: '36px', backgroundColor: COLORS.white, color: COLORS.textPrimary, zIndex: 10, border: 'none' }}><ChevronLeft size={20} /></button>
@@ -62,7 +67,7 @@ const BookShelf = ({ title, books, cart, onBookClick, showBadge }) => {
                 <img src={book.cover} alt={book.title} onError={handleImageError} style={{ height: '170px', width: '100%', objectFit: 'cover', borderRadius: '2px 6px 6px 2px', boxShadow: '-4px 0px 10px rgba(0,0,0,0.15)', borderLeft: '3px solid rgba(255,255,255,0.3)', opacity: inCart ? 0.6 : 1, transition: 'opacity 0.2s ease' }} />
                 {inCart && <div className="position-absolute top-50 start-50 translate-middle badge rounded-pill px-3 py-2 shadow-sm" style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white, border: `1px solid ${COLORS.white}` }}>In Bag</div>}
                 
-                {/* Generic Badge Handler for E-Books or Coming Soon */}
+                {/* Generic Badge Handler */}
                 {showBadge && !inCart && (
                   <div className="position-absolute bottom-0 start-50 translate-middle-x badge w-100 rounded-0" style={{ backgroundColor: showBadge === 'E-Book' ? COLORS.textPrimary : COLORS.textSecondary, color: COLORS.white, fontSize: '0.7rem' }}>
                     {showBadge}
@@ -103,6 +108,8 @@ const GridBookCard = ({ book, cart, onBookClick, addToCart, removeFromCart }) =>
             e.stopPropagation(); 
             if (book.isEbook) {
               alert("Opening E-Reader for members...");
+            } else if (book.availableCopies === 0) {
+              alert("Waitlist functionality coming soon!");
             } else {
               inCart ? removeFromCart(book.id) : addToCart(book); 
             }
@@ -110,7 +117,7 @@ const GridBookCard = ({ book, cart, onBookClick, addToCart, removeFromCart }) =>
           className="btn btn-sm w-100 fw-bold rounded-pill d-flex align-items-center justify-content-center gap-2"
           style={{ backgroundColor: inCart ? COLORS.activeBg : 'transparent', border: `1px solid ${COLORS.textPrimary}`, color: COLORS.textPrimary, transition: 'all 0.2s', fontSize: '0.8rem' }}
         >
-          {book.isEbook ? <><BookOpen size={14}/> Read Now</> : (inCart ? 'Remove' : '+ Add to Bag')}
+          {book.isEbook ? <><BookOpen size={14}/> Read Now</> : book.availableCopies === 0 ? 'Join Waitlist' : (inCart ? 'Remove' : '+ Add to Bag')}
         </button>
       </div>
     </div>
@@ -141,7 +148,7 @@ export default function Home() {
   const trendingBooks = MOCK_BOOKS.filter(b => b.isTrending);
   const recommendedBooks = MOCK_BOOKS.filter(b => b.isRecommended);
   const comingSoonBooks = MOCK_BOOKS.filter(b => b.isComingSoon);
-  const ebookBooks = MOCK_BOOKS.filter(b => b.isEbook); // Filter out our E-Books
+  const ebookBooks = MOCK_BOOKS.filter(b => b.isEbook); 
 
   const filteredCatalog = MOCK_BOOKS.filter(book => {
     const matchesSearch = !searchQuery || book.title.toLowerCase().includes(searchQuery.toLowerCase()) || book.author.toLowerCase().includes(searchQuery.toLowerCase());
@@ -182,10 +189,7 @@ export default function Home() {
           <div className="d-flex flex-column gap-5 mb-5 pb-4 border-bottom" style={{ borderColor: COLORS.activeBg }}>
             <BookShelf title="Trending Now" books={trendingBooks} cart={cart} onBookClick={handleBookClick} />
             <BookShelf title="Recommended For You" books={recommendedBooks} cart={cart} onBookClick={handleBookClick} />
-            
-            {/* NEW: Exclusive E-Books Shelf */}
             <BookShelf title="Exclusive E-Books" books={ebookBooks} cart={cart} onBookClick={handleBookClick} showBadge="E-Book" />
-            
             <BookShelf title="Coming Soon" books={comingSoonBooks} cart={cart} onBookClick={handleBookClick} showBadge="Coming Soon" />
           </div>
         )}

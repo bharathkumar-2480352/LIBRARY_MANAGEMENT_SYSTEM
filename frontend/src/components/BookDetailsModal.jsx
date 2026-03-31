@@ -1,4 +1,4 @@
-import { X, Building2, Calendar, FileText, Globe, Heart, ShoppingCart, BookOpen } from 'lucide-react';
+import { X, Building2, Calendar, FileText, Globe, Heart, ShoppingCart, BookOpen, Clock } from 'lucide-react';
 import useStore from '../store/useStore';
 import { COLORS } from '../utils/theme';
 
@@ -74,33 +74,61 @@ export default function BookDetailsModal({ book, isOpen, onClose }) {
               </div>
             </div>
 
-            <div className="mt-auto d-flex gap-3">
-              {/* E-Book vs Physical Cart Logic */}
-              {book.isEbook ? (
-                <button 
-                  onClick={() => alert("Opening E-Reader securely in your browser...")}
-                  className="btn flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill shadow-sm"
-                  style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white, border: `1px solid ${COLORS.textPrimary}`, padding: '12px' }}
-                >
-                  <BookOpen size={18} /> Read Now (Included)
-                </button>
-              ) : (
-                <button 
-                  onClick={() => inCart ? removeFromCart(book.id) : addToCart(book)}
-                  className="btn flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill"
-                  style={{ backgroundColor: inCart ? COLORS.mainBg : COLORS.textPrimary, color: inCart ? COLORS.textPrimary : COLORS.white, border: `1px solid ${COLORS.textPrimary}`, padding: '12px' }}
-                >
-                  <ShoppingCart size={18} /> {inCart ? 'Remove from Bag' : 'Add to Bag'}
-                </button>
-              )}
+            <div className="mt-auto">
               
-              <button 
-                onClick={() => toggleWishlist(book)}
-                className="btn rounded-pill d-flex align-items-center justify-content-center"
-                style={{ backgroundColor: inWishlist ? COLORS.activeBg : 'transparent', border: `1px solid ${COLORS.textPrimary}`, color: inWishlist ? COLORS.textPrimary : COLORS.textSecondary, width: '50px' }}
-              >
-                <Heart size={20} fill={inWishlist ? COLORS.textPrimary : 'none'} color={inWishlist ? COLORS.textPrimary : COLORS.textPrimary} />
-              </button>
+              {/* NEW: Availability Status Indicator */}
+              {!book.isEbook && (
+                <div className="mb-3 d-flex align-items-center gap-2">
+                  <span style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: book.availableCopies > 0 ? '#27ae60' : '#e74c3c'
+                  }}></span>
+                  <span style={{ fontSize: '0.85rem', color: COLORS.textPrimary, fontWeight: '600' }}>
+                    {book.availableCopies > 0 
+                      ? `${book.availableCopies} ${book.availableCopies === 1 ? 'copy' : 'copies'} available in library` 
+                      : 'Currently checked out'}
+                  </span>
+                </div>
+              )}
+
+              <div className="d-flex gap-3">
+                {/* E-Book vs Physical Cart vs Waitlist Logic */}
+                {book.isEbook ? (
+                  <button 
+                    onClick={() => alert("Opening E-Reader securely in your browser...")}
+                    className="btn flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill shadow-sm"
+                    style={{ backgroundColor: COLORS.textPrimary, color: COLORS.white, border: `1px solid ${COLORS.textPrimary}`, padding: '12px' }}
+                  >
+                    <BookOpen size={18} /> Read Now (Included)
+                  </button>
+                ) : book.availableCopies === 0 ? (
+                  <button 
+                    onClick={() => alert("Waitlist functionality coming soon!")}
+                    className="btn flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill"
+                    style={{ backgroundColor: COLORS.mainBg, color: COLORS.textPrimary, border: `1px solid ${COLORS.textSecondary}`, padding: '12px' }}
+                  >
+                    <Clock size={18} /> Join Waitlist
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => inCart ? removeFromCart(book.id) : addToCart(book)}
+                    className="btn flex-grow-1 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill"
+                    style={{ backgroundColor: inCart ? COLORS.mainBg : COLORS.textPrimary, color: inCart ? COLORS.textPrimary : COLORS.white, border: `1px solid ${COLORS.textPrimary}`, padding: '12px' }}
+                  >
+                    <ShoppingCart size={18} /> {inCart ? 'Remove from Bag' : 'Add to Bag'}
+                  </button>
+                )}
+                
+                <button 
+                  onClick={() => toggleWishlist(book)}
+                  className="btn rounded-pill d-flex align-items-center justify-content-center"
+                  style={{ backgroundColor: inWishlist ? COLORS.activeBg : 'transparent', border: `1px solid ${COLORS.textPrimary}`, color: inWishlist ? COLORS.textPrimary : COLORS.textSecondary, width: '50px' }}
+                >
+                  <Heart size={20} fill={inWishlist ? COLORS.textPrimary : 'none'} color={inWishlist ? COLORS.textPrimary : COLORS.textPrimary} />
+                </button>
+              </div>
             </div>
 
           </div>
