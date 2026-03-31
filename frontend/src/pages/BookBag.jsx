@@ -1,22 +1,22 @@
-// src/pages/BookBag.jsx
 import React from 'react';
 import useStore from '../store/useStore';
 import { Trash2, BookOpen, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const THEME = {
-  paper: '#F5E6D3', // Cream background
-  cardBg: '#FAF3E0', // Lighter cream for cards
-  border: '#D2B48C', // Tan border
+  paper: '#F5E6D3',
+  cardBg: '#FAF3E0',
+  border: '#D2B48C',
   text: '#2D241E',
-  button: '#C6A682'  // Wood-like brown
+  button: '#C6A682' 
 };
 
 export default function BookBag() {
-  const { cart, removeFromCart, clearCart, activeBorrows } = useStore();
+  const { cart, removeFromCart, checkout, getActiveBorrowsCount } = useStore();
   const navigate = useNavigate();
 
   const totalInBag = cart.length;
+  const activeBorrows = getActiveBorrowsCount();
   const totalOccupied = totalInBag + activeBorrows;
   const isOverLimit = totalOccupied > 6;
 
@@ -26,8 +26,10 @@ export default function BookBag() {
       alert("Please remove some books. You can only have 6 books total.");
       return;
     }
-    alert('Books reserved! Please pick them up at the front desk.');
-    clearCart();
+    
+    // NEW: Fire the checkout function to generate due dates and move to Dashboard
+    checkout();
+    alert('Books reserved! Please pick them up at the front desk. They are due in 14 days.');
     navigate('/my-library');
   };
 
@@ -59,7 +61,7 @@ export default function BookBag() {
                     }}
                   >
                     <img 
-                      src={book.coverImage || "/api/placeholder/80/120"} 
+                      src={book.cover || "https://placehold.co/80x120"} 
                       alt={book.title} 
                       className="rounded shadow-sm"
                       style={{ width: '80px', height: '110px', objectFit: 'cover' }}
