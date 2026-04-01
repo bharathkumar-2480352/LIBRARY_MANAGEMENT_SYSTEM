@@ -5,9 +5,18 @@ const useStore = create((set, get) => ({
   cart: [], 
   wishlist: [], // NEW: Track wishlisted items
   activeBorrows: 0,
+  isLogged : localStorage.getItem('isLoggedIn') === 'true',
+  currUser:JSON.parse(localStorage.getItem('currentUser'))|| null,
   
   login: (userData) => set({ user: userData }),
-
+  setLoggedIn: (status) => {
+    localStorage.setItem('isLoggedIn', status ? 'true' : 'false');
+    set({ isLogged: status });
+  },
+  setCurrentUser: (user)=>{
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    set({currUser:user})
+  },
   getCartTotal: () => {
     return get().cart.reduce((total, item) => total + item.quantity, 0);
   },

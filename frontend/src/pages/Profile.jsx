@@ -1,46 +1,26 @@
-import {
-  Pencil,
-  User,
-  Phone,
-  MapPin,
-  Mail,
-  CalendarCheck,
-  KeyRound,
-  LogOut,
-  ArrowLeft,
-  UserRoundPen
-} from 'lucide-react';
+import {Pencil,User,Phone,MapPin,Mail,CalendarCheck,KeyRound,LogOut,ArrowLeft,UserRoundPen} from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
 import { useState,useEffect } from 'react';
+import useStore from '../store/useStore';
 
 const Profile=()=>{
 
+  const {isLogged,setLoggedIn,setCurrentUser,currUser} =useStore();
   const navigate=useNavigate();
   const [view,setView]=useState("profile");
-  const [userData, setUserData] = useState({
-    fullName: 'Guest',
+  const [userData, setUserData] = useState(currUser||{
+    firstName: '',
+    lastName:'',
     email: '',
     phone: 'Not provided',
     address: 'Not provided'
   });
-  const [tempData, setTempData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    address: ""
-  });
+  const [tempData, setTempData] =useState({ ...userData });
 
   useEffect(() => {
-    // Fetch user from localStorage
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      setUserData(JSON.parse(savedUser));
-    }
-  }, []);
-
-  // Split full name for display if needed
-  const firstName = userData.fullName ? userData.fullName.split(' ')[0] : 'Reader';
-  const lastName = userData.fullName ? userData.fullName.split(' ').slice(1).join(' ') : '';
+    if (currUser) setUserData(currUser);
+  }, [currUser]);
+  
   
   const inputStyle = {
   backgroundColor: '#fdfcfb',
@@ -50,23 +30,44 @@ const Profile=()=>{
   fontSize: '15px'
 };
    const handleSave = () => {
+
+    const phoneRegex = /^[0-9]{10}$/;
+
     const updatedUser = {
       ...userData,
-      fullName: `${tempData.firstName} ${tempData.lastName}`.trim(),
+      firstName:tempData.firstName,
+      lastName:tempData.lastName,
       phone: tempData.phone,
       address: tempData.address
     };
+    if (!phoneRegex.test(tempData.phone)) {
+    alert("Please enter a valid 10-digit phone number.");
+    return; // Stop the function here
+    }
+    if(tempData.firstName=="")
+    {
+      alert("Please fill the First Name");
+      return;
+    }
+    if(tempData.address=="")
+    {
+      alert("Please fill the address");
+      return;
+    }
+    
 
-
-    setUserData(updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    setCurrentUser(updatedUser);
+    const allUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    const updatedUsersArray = allUsers.map(u => 
+    u.email === updatedUser.email ? updatedUser : u
+  );
+  localStorage.setItem('users', JSON.stringify(updatedUsersArray));
     setView("profile");
   };
   const handleEditClick = () => {
-    const [first, ...rest] = (userData.fullName || "").split(" ");
     setTempData({
-      firstName: first || "",
-      lastName: rest.join(" ") || "",
+      firstName: userData.firstName,
+      lastName: userData.lastName,
       phone: userData.phone,
       address: userData.address
     });
@@ -96,20 +97,22 @@ const Profile=()=>{
               boxShadow: 'inset 0 2px 4px rgba(0,0,0,.06)',
               fontWeight: '800',
               color: '#4a3b26',
-              userSelect: 'none'
+              userSelect: 'none',
+              paddingTop:"10px"
             }}> 
+            <h1>{userData.firstName.charAt(0).toUpperCase()}</h1>
         </div>
         </div>
             <ProfileField
                     icon={<User size={18} />}
                     label="First Name:"
-                    value={firstName}
+                    value={userData.firstName}
                     line={true}
                   />
             <ProfileField
                     icon={<User size={18} />}
                     label="Last Name:"
-                    value={lastName}
+                    value={userData.lastName}
                     line={true}
                   />
                   <ProfileField
@@ -175,7 +178,11 @@ const Profile=()=>{
                     style={{backgroundColor:"#E8DED3",borderStyle:"none"}}
                     className="btn btn-outline-dark d-flex align-items-center gap-2"
                     type="button"
-                    onClick={()=>{navigate('/login')}}
+                    onClick={()=>{
+                      setLoggedIn(false);
+                      setCurrentUser(null);
+                      navigate('/login')
+                    }}
                   >
                     <LogOut size={18} />
                     LOGOUT
@@ -214,6 +221,7 @@ const Profile=()=>{
           type="text" 
           className="form-control custom-input" 
           value={tempData.firstName}
+          required
           onChange={(e) => setTempData({...tempData, firstName: e.target.value})}
           style={inputStyle}
         />

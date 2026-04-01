@@ -5,11 +5,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import monkeyLogo from '/ReadMonkey-icon.png';
+import useStore from '../store/useStore';
 
 const Login = () => {
   const navigate = useNavigate();
   const [isLoginView, setIsLoginView] = useState(true);
-  
+  const {setLoggedIn,setCurrentUser}=useStore();
   // Changed error string to an object for field-specific tracking
   const [errors, setErrors] = useState({});
 
@@ -75,8 +76,8 @@ const Login = () => {
     }
 
     if (userExists.password === password) {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(userExists));
+      setLoggedIn(true);
+      setCurrentUser(userExists);
       navigate('/');
     } else {
       setErrors({ password: 'Incorrect password.' });
