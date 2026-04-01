@@ -5,6 +5,7 @@ const useStore = create((set, get) => ({
   cart: [], 
   wishlist: [], // NEW: Track wishlisted items
   activeBorrows: 0,
+  borrowedBooks:[],
   isLogged : localStorage.getItem('isLoggedIn') === 'true',
   currUser:JSON.parse(localStorage.getItem('currentUser'))|| null,
   
