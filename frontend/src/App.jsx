@@ -9,11 +9,6 @@ import MyLibrary from './pages/MyLibrary';
 import Profile from './pages/profile';
 import WishList from './pages/WishList';
 import BookBag from './pages/BookBag';
-import MyLibrary from './pages/MyLibrary'; 
-import Profile from './pages/profile';
-import WishList from './pages/WishList';
-import BookBag from './pages/BookBag';
-
 function App() {
   return (
     <BrowserRouter>
