@@ -13,14 +13,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/my-library" element={<MyLibrary />} /> 
           <Route path="/profile" element={<Profile/>}/>
-          <Route path="/wishlist" element={<WishList />} />
-          <Route path="/cart" element={<BookBag />} />
+          <Route path="/my-library" element={<MyLibrary />} /> 
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/cart" element={<BookBag />} />
         </Route>
