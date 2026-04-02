@@ -8,7 +8,6 @@ import MyLibrary from './pages/MyLibrary';
 import Profile from './pages/profile';
 import WishList from './pages/WishList';
 import BookBag from './pages/BookBag';
-
 function App() {
   return (
     <BrowserRouter>
@@ -17,8 +16,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/my-library" element={<MyLibrary />} /> 
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/wishlist" element={<WishList />} />
+          <Route path="/cart" element={<BookBag />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/cart" element={<BookBag />} />
         </Route>

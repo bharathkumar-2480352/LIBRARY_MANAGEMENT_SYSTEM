@@ -2,7 +2,7 @@ import React from 'react';
 import useStore from '../store/useStore';
 import { Trash2, BookOpen, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+      
 const THEME = {
   paper: '#F5E6D3',
   cardBg: '#FAF3E0',

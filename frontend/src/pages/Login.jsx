@@ -241,7 +241,7 @@ const Login = () => {
                   <ErrorMsg field="confirmPassword" />
                 </div>
               </div>
-              <button className="wood-btn" onClick={handleRegister}>NEXT</button>
+              <button className="wood-btn" onClick={handleRegister}>Register</button>
               <p className="text-center small mb-0 mt-3">Already a member? <span className="toggle-text" onClick={() => { setIsLoginView(true); setErrors({}); }}>Log In Here</span></p>
             </div>
           )}
