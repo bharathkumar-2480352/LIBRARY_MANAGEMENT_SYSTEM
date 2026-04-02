@@ -42,7 +42,7 @@ const Login = () => {
   const handleSuccess = async (credentialResponse) => {
     try {
       const token = credentialResponse.credential;
-      const response = await axios.post('http://localhost:5000/api/auth/google-login', {
+      const response = await axios.post('https://readmonkey.onrender.com/api/auth/google-login', {
         token: token
       });
       if (response.status === 200) {
