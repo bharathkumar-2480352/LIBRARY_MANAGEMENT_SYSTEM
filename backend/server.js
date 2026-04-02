@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN || 'https://read-monkey.onrender.com/' }));
 app.use('/api/auth', authRoutes);
 app.get('/', (req, res) => {
     res.send("Library API running in 'No-DB' mode.");
