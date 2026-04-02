@@ -3,11 +3,21 @@ import { create } from 'zustand';
 const useStore = create((set, get) => ({
   user: null,
   cart: [], 
-  wishlist: [],
-  borrowedBooks: [], // NEW: Track borrowed books dynamically
+  wishlist: [], // NEW: Track wishlisted items
+  activeBorrows: 0,
+  borrowedBooks:[],
+  isLogged : localStorage.getItem('isLoggedIn') === 'true',
+  currUser:JSON.parse(localStorage.getItem('currentUser'))|| null,
   
   login: (userData) => set({ user: userData }),
-
+  setLoggedIn: (status) => {
+    localStorage.setItem('isLoggedIn', status ? 'true' : 'false');
+    set({ isLogged: status });
+  },
+  setCurrentUser: (user)=>{
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    set({currUser:user})
+  },
   getCartTotal: () => {
     return get().cart.reduce((total, item) => total + (item.quantity || 1), 0);
   },

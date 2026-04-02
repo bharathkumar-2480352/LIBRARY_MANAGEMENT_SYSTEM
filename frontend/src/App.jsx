@@ -1,4 +1,3 @@
-
 // src/App.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
