@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import MyLibrary from './pages/MyLibrary'; 
-import Profile from './pages/profile';
+import Profile from './pages/Profile';
 import WishList from './pages/WishList';
 import BookBag from './pages/BookBag';
 function App() {
